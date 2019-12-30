@@ -27,12 +27,15 @@
   },
   "homepage": "https://github.com/rustwasm/create-wasm-app#readme",
   "dependencies": {
-    "hello-wasm-pack": "file:../pkg"
+    "chessboardjs": "0.0.1",
+    "hello-wasm-pack": "file:../pkg",
+    "jquery": "3.4.1"
   },
   "devDependencies": {
+    "copy-webpack-plugin": "^5.0.0",
+    "expose-loader": "0.7.5",
     "webpack": "^4.29.3",
     "webpack-cli": "^3.1.0",
-    "webpack-dev-server": "^3.1.5",
-    "copy-webpack-plugin": "^5.0.0"
+    "webpack-dev-server": "^3.1.5"
   }
 }
