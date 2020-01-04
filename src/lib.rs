@@ -1,8 +1,10 @@
+mod piece_evaluation;
 mod utils;
 
 use chess::{Board, BoardBuilder, ChessMove, Color, Game, MoveGen, Piece, Square, ALL_SQUARES};
-use std::cmp::{max, min};
 //use rand::seq::IteratorRandom;
+use crate::piece_evaluation::evaluate_piece;
+use std::cmp::Ordering::Equal;
 use wasm_bindgen::__rt::core::f32::MIN;
 use wasm_bindgen::prelude::*;
 
@@ -63,10 +65,12 @@ impl RChess {
                 let new_board = &self.game.current_position().make_move_new(chess_move);
                 (chess_move, {
                     let is_maximising_player = false;
-                    minimax(new_board, 5, -10000, 10000, is_maximising_player)
+                    minimax(new_board, 3, -10000.0, 10000.0, is_maximising_player)
                 })
             })
-            .max_by(|(_, estimation1), (_, estimation2)| estimation1.cmp(estimation2))
+            .max_by(|(_, estimation1), (_, estimation2)| {
+                estimation1.partial_cmp(estimation2).unwrap_or(Equal)
+            })
             .map(|(chess_move, _)| chess_move)
             .into_iter()
             .for_each(|chess_move| {
@@ -80,36 +84,43 @@ impl RChess {
     }
 }
 
-fn minimax(board: &Board, depth: u32, alpha: i32, beta: i32, is_maximising_player: bool) -> i32 {
+fn minimax(board: &Board, depth: u32, alpha: f32, beta: f32, is_maximising_player: bool) -> f32 {
     if depth == 0 {
         return -evaluate_board(board);
     }
     let mut move_gen = MoveGen::new_legal(board);
     let evaluation = if is_maximising_player {
-        let mut best_evaluation = -9999;
+        let mut best_evaluation: f32 = -9999.0;
         let mut alpha = alpha;
         for chess_move in move_gen {
             let new_board = board.make_move_new(chess_move);
-            best_evaluation = max(
-                best_evaluation,
-                minimax(&new_board, depth - 1, alpha, beta, !is_maximising_player),
-            );
-            alpha = max(alpha, best_evaluation);
+            best_evaluation = best_evaluation.max(minimax(
+                &new_board,
+                depth - 1,
+                alpha,
+                beta,
+                !is_maximising_player,
+            ));
+
+            alpha = alpha.max(best_evaluation);
             if beta <= alpha {
                 break;
             }
         }
         best_evaluation
     } else {
-        let mut best_evaluation = 9999;
+        let mut best_evaluation: f32 = 9999.0;
         let mut beta = beta;
         for chess_move in move_gen {
             let new_board = board.make_move_new(chess_move);
-            best_evaluation = min(
-                best_evaluation,
-                minimax(&new_board, depth - 1, alpha, beta, !is_maximising_player),
-            );
-            beta = min(beta, best_evaluation);
+            best_evaluation = best_evaluation.min(minimax(
+                &new_board,
+                depth - 1,
+                alpha,
+                beta,
+                !is_maximising_player,
+            ));
+            beta = beta.min(best_evaluation);
             if beta <= alpha {
                 break;
             }
@@ -124,33 +135,18 @@ fn minimax(board: &Board, depth: u32, alpha: i32, beta: i32, is_maximising_playe
     evaluation
 }
 
-fn evaluate_board(board: &Board) -> i32 {
+fn evaluate_board(board: &Board) -> f32 {
     unsafe {
         eval_count = eval_count + 1;
     }
-    ALL_SQUARES.iter().fold(0, |acc, &square| {
+    ALL_SQUARES.iter().fold(0.0, |acc, &square| {
         acc + board
             .color_on(square)
             .and_then(|color| {
                 board
                     .piece_on(square)
-                    .map(|piece| piece_value(&piece, &color))
+                    .map(|piece| evaluate_piece(piece, color, square))
             })
-            .unwrap_or(0)
+            .unwrap_or(0.0)
     })
-}
-
-fn piece_value(piece: &Piece, color: &Color) -> i32 {
-    let value = match piece {
-        Piece::Pawn => 10,
-        Piece::Knight => 30,
-        Piece::Bishop => 30,
-        Piece::Rook => 50,
-        Piece::Queen => 90,
-        Piece::King => 900,
-    };
-    match color {
-        Color::White => value,
-        Color::Black => -value,
-    }
 }
