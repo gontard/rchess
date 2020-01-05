@@ -1,4 +1,17 @@
-use chess::{Color, Piece, Square};
+use chess::{Board, Color, Piece, Square, ALL_SQUARES};
+
+pub fn evaluate_board(board: &Board) -> f32 {
+    ALL_SQUARES
+        .iter()
+        .filter_map(|&square| {
+            board.color_on(square).and_then(|color| {
+                board
+                    .piece_on(square)
+                    .map(|piece| evaluate_piece(piece, color, square))
+            })
+        })
+        .sum()
+}
 
 pub fn evaluate_piece(piece: Piece, color: Color, square: Square) -> f32 {
     let evaluation = match piece {
