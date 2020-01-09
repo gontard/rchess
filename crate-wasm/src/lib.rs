@@ -58,7 +58,7 @@ impl RChess {
     pub fn compute_move(&mut self) -> String {
         self.stats = Stats::new();
 
-        let depth = 5;
+        let depth = 4;
         let move_gen = MoveGen::new_legal(&self.game.current_position());
         move_gen
             .map(|chess_move| {
