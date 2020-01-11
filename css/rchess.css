@@ -1,0 +1,12 @@
+body {
+  display: grid;
+  height: 100vh;
+  margin: 0;
+  place-items: center center;
+  /* https://mycolor.space/?hex=%23B58863&sub=1 */
+  background-color: #FFF7EB;
+}
+
+.board {
+  width: 400px;
+}
