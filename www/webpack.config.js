@@ -1,9 +1,8 @@
 const path = require("path");
 const CopyWebpackPlugin = require("copy-webpack-plugin");
-const HtmlWebpackPlugin = require("html-webpack-plugin");
+const WasmPackPlugin = require("@wasm-tool/wasm-pack-plugin");
 
 const dist = path.resolve(__dirname, "dist");
-const WasmPackPlugin = require("@wasm-tool/wasm-pack-plugin");
 
 const appConfig = {
   entry: "./main.js",
