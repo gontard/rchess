@@ -6,7 +6,8 @@
   "license": "Apache-2.0/MIT",
   "scripts": {
     "start": "webpack-dev-server -d",
-    "build": "webpack --mode production"
+    "build": "webpack --mode production",
+    "prettier": "prettier --write \"./**/*.{js,jsx,json}\""
   },
   "bin": {
     "create-rust-wasm-worker": ".bin/create-rust-wasm-worker.js"
@@ -15,6 +16,7 @@
     "@wasm-tool/wasm-pack-plugin": "0.1.6",
     "copy-webpack-plugin": "5.1.1",
     "expose-loader": "0.7.5",
+    "prettier": "1.19.1",
     "webpack": "^4.27.1",
     "webpack-cli": "^3.1.2",
     "webpack-dev-server": "^3.1.11"

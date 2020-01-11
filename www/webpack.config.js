@@ -8,16 +8,19 @@ const appConfig = {
   entry: "./main.js",
   output: {
     path: dist,
-    filename: "main.js",
+    filename: "main.js"
   },
   mode: "development",
   plugins: [
     new CopyWebpackPlugin([
-      'index.html',
-      { from: 'node_modules/chessboardjs/www/css/chessboard.css', to: 'css/chessboard.css' },
-      { from: 'css/rchess.css', to: 'css/rchess.css' },
-      { from: 'node_modules/chessboardjs/www/img', to: 'img' }
-    ]),
+      "index.html",
+      {
+        from: "node_modules/chessboardjs/www/css/chessboard.css",
+        to: "css/chessboard.css"
+      },
+      { from: "css/rchess.css", to: "css/rchess.css" },
+      { from: "node_modules/chessboardjs/www/img", to: "img" }
+    ])
   ]
 };
 
