@@ -9,7 +9,13 @@ jobs:
 
     steps:
     - uses: actions/checkout@v1
-    - name: Build
+    - name: Build rust
       run: cargo build --verbose
-    - name: Run tests
+    - name: Run rust tests
       run: cargo test --verbose
+    - name: install node modules
+      run: npm ci
+      working-directory: ./www
+    - name: build app
+      run: npm run build
+      working-directory: ./www
