@@ -9,17 +9,15 @@ jobs:
 
     steps:
     - uses: actions/checkout@v1
-    - name: Build rust
-      run: cargo build --verbose
-    - name: Run rust tests
-      run: cargo test --verbose
     - name: install node modules
       run: npm ci
       working-directory: ./www
-    - name: build app
+    - name: build app and wasm
       run: npm run build
       working-directory: ./www
-    - name: deploy
+    - name: run rust tests
+      run: cargo test --verbose
+    - name: deploy to gh-pages
       uses: JamesIves/github-pages-deploy-action@releases/v3
       with:
         ACCESS_TOKEN: ${{ secrets.ACCESS_TOKEN }}
