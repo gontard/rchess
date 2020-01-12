@@ -1,14 +1,38 @@
+:root {
+  /* https://mycolor.space/?hex=%230097AD&sub=1  cube palette */
+  --main-bg-color: rgba(238, 232, 169, 0.3);
+  --white-color: #EEE8A9;
+  --black-color: #0097AD;
+}
+
 body {
   display: grid;
   height: 100vh;
   margin: 0;
   place-items: center center;
-  /* https://mycolor.space/?hex=%23B58863&sub=1 */
-  background-color: #FFF7EB;
+  background-color: var(--main-bg-color);
+  /*background-image: var(--main-bg-gradient);*/
 }
 
 .board {
   width: 400px;
+}
+
+/* white square */
+.white-1e1d7 {
+  background-color: var(--white-color);
+  color: var(--black-color);
+}
+
+/* black square */
+.black-3c85d {
+  background-color: #005C7C;
+  color: var(--black-color);
+}
+
+/* highlighted square */
+.highlight1-32417, .highlight2-9c5d2 {
+  box-shadow: inset 0 0 2px 2px #00A8D3;
 }
 
 .ia-working {

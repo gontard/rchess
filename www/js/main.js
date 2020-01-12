@@ -7,6 +7,7 @@ const state = new State();
 const board = Chessboard("board", {
   position: "start",
   showErrors: "console",
+  showNotation: false,
   draggable: true,
   onDragStart: onDragStart,
   onDrop: onDrop
@@ -21,7 +22,7 @@ function onDragStart() {
 
 function onDrop(source, target, piece, newUserPosition, oldUserPosition) {
   if (source === target) return;
-  state.setBlackTurn()
+  state.setBlackTurn();
   sendMovePiece(
     Chessboard.objToFen(oldUserPosition),
     Chessboard.objToFen(newUserPosition),
@@ -59,16 +60,16 @@ worker.addEventListener("message", event => {
     if (newPosition !== previousPosition) {
       sendComputeMove();
     } else {
-      state.setWhiteTurn()
+      state.setWhiteTurn();
     }
   } else if ("COMPUTE_MOVE_RESPONSE" === type) {
     const { newPosition } = payload;
     console.log("New IA position: " + newPosition);
     board.position(newPosition);
-    state.setWhiteTurn()
+    state.setWhiteTurn();
   }
 });
 
 state.addEventListener("change", () => {
-  $( ".ia-working" ).toggleClass( "visible", state.isBlackTurn() );
-})
+  $(".ia-working").toggleClass("visible", state.isBlackTurn());
+});
