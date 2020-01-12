@@ -5,7 +5,7 @@ const WasmPackPlugin = require("@wasm-tool/wasm-pack-plugin");
 const dist = path.resolve(__dirname, "dist");
 
 const appConfig = {
-  entry: "./main.js",
+  entry: "./js/main.js",
   output: {
     path: dist,
     filename: "main.js"
@@ -21,11 +21,15 @@ const appConfig = {
       { from: "css/rchess.css", to: "css/rchess.css" },
       { from: "node_modules/chessboardjs/www/img", to: "img" }
     ])
-  ]
+  ],
+  devServer: {
+    port: 8080,
+    disableHostCheck: true
+  }
 };
 
 const workerConfig = {
-  entry: "./worker.js",
+  entry: "./js/worker.js",
   target: "webworker",
   plugins: [
     new WasmPackPlugin({

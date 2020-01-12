@@ -1,4 +1,4 @@
-import("../crate-wasm/pkg").then(wasm => {
+import("../../crate-wasm/pkg").then(wasm => {
   const { RChess } = wasm;
   const rchess = RChess.new();
   console.log("instantiate RChess in worker");
