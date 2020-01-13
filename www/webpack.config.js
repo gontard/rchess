@@ -19,7 +19,8 @@ const appConfig = {
         to: "css/chessboard.css"
       },
       { from: "css/rchess.css", to: "css/rchess.css" },
-      { from: "node_modules/chessboardjs/www/img", to: "img" }
+      { from: "node_modules/chessboardjs/www/img", to: "img" },
+      { from: "img", to: "img" }
     ])
   ],
   devServer: {
