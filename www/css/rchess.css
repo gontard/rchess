@@ -9,7 +9,7 @@ body {
   height: 100vh;
   margin: 0;
   place-items: center center;
-  background: linear-gradient(rgba(255,255,255,.7), rgba(255,255,255,.6)), url("../img/background4.jpg");
+  background: linear-gradient(rgba(255,255,255,.7), rgba(255,255,255,.6)), url("../img/background.jpg");
 }
 
 .board {
