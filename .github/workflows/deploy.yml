@@ -1,6 +1,9 @@
-name: build
+name: deploy to github pages
 
-on: [push]
+on:
+  push:
+    branches:
+      - master
 
 jobs:
   build:
@@ -9,8 +12,6 @@ jobs:
 
     steps:
     - uses: actions/checkout@v1
-    - name: Run rust tests
-      run: cargo test --release --verbose
     - name: Install node modules
       run: npm ci
       working-directory: ./www
