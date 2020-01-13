@@ -7,7 +7,8 @@
   "scripts": {
     "start": "webpack-dev-server -d",
     "build": "webpack --mode production",
-    "prettier": "prettier --write \"./**/*.{js,jsx,json}\""
+    "prettier": "prettier --write \"./**/*.{js,jsx,json}\"",
+    "prettier:check": "prettier --check \"./**/*.{js,jsx,json}\""
   },
   "bin": {
     "create-rust-wasm-worker": ".bin/create-rust-wasm-worker.js"
