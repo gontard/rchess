@@ -1,6 +1,5 @@
 :root {
   /* https://mycolor.space/?hex=%230097AD&sub=1  cube palette */
-  --main-bg-color: rgba(238, 232, 169, 0.3);
   --white-color: #EEE8A9;
   --black-color: #0097AD;
 }
@@ -10,8 +9,7 @@ body {
   height: 100vh;
   margin: 0;
   place-items: center center;
-  background-color: var(--main-bg-color);
-  /*background-image: var(--main-bg-gradient);*/
+  background: linear-gradient(rgba(255,255,255,.7), rgba(255,255,255,.6)), url("../img/background4.jpg");
 }
 
 .board {
