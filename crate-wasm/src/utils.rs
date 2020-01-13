@@ -22,13 +22,16 @@ pub fn read_chess_move(move_as_str: &str) -> ChessMove {
 
 #[cfg(test)]
 mod tests {
-    use chess::{Square, ChessMove};
+    use chess::{ChessMove, Square};
 
     use super::read_chess_move;
 
     #[test]
     fn read_chess_move_success() {
-        assert_eq!(ChessMove::new(Square::A1, Square::E7, None), read_chess_move("a1-e7"));
+        assert_eq!(
+            ChessMove::new(Square::A1, Square::E7, None),
+            read_chess_move("a1-e7")
+        );
     }
 
     #[test]
