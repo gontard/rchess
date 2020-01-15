@@ -7,6 +7,7 @@ use crate::transposition_table::TranspositionTable;
 use crate::utils::{read_chess_move, set_panic_hook};
 use chess::{Board, ChessMove, Game, MoveGen};
 use std::cmp::Ordering::Equal;
+use std::fmt;
 use wasm_bindgen::prelude::*;
 
 // When the `wee_alloc` feature is enabled, use `wee_alloc` as the global
@@ -50,9 +51,7 @@ impl RChess {
         let new_chess_move: ChessMove = read_chess_move(new_move);
         let is_legal_move = &self.game.make_move(new_chess_move);
         console_log!("-> move={} legal={}", new_chess_move, is_legal_move);
-
-        let position_as_fen = format!("{}", self.game.current_position());
-        position_as_fen
+        format!("{}", self)
     }
 
     pub fn compute_move(&mut self) -> String {
@@ -83,8 +82,7 @@ impl RChess {
                 console_log!("{:#?}", self.stats);
                 &self.game.make_move(chess_move);
             });
-        let position_as_fen = format!("{}", self.game.current_position());
-        position_as_fen
+        format!("{}", self)
     }
 
     fn minimax(
@@ -135,6 +133,20 @@ impl RChess {
         self.transposition_table
             .put_evaluation(board, depth, best_evaluation);
         best_evaluation
+    }
+}
+
+impl fmt::Display for RChess {
+    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
+        write!(f, "{{")?;
+        write!(f, "\"position\":\"{}\"", self.game.current_position())?;
+        match self.game.result() {
+            None => {},
+            Some(result) => {
+                write!(f, ",\"result\":\"{:?}\"", result)?;
+            },
+        }
+        write!(f, "}}")
     }
 }
 
