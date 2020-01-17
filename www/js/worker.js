@@ -10,20 +10,17 @@ import("../../crate-wasm/pkg").then(wasm => {
         previousPosition,
         move: { source, target }
       } = payload;
-      const response = rchess.move_piece(source + "-" + target);
-      console.log(response)
-      sendMovePieceResponse(previousPosition, JSON.parse(response));
+      const response = JSON.parse(rchess.move_piece(source + "-" + target));
+      console.log("MOVE_PIECE response: ", response);
+      postMovePieceResponse(previousPosition, response);
     } else if ("COMPUTE_MOVE" === type) {
-      const d = new Date().getTime();
-      const response = rchess.compute_move();
-      const d2 = new Date().getTime();
-      console.log(`duration: ${(d2 - d) / 1000}s`);
-      console.log("New IA response: " + response);
-      sendComputeMoveResponse(JSON.parse(response));
+      const response = JSON.parse(rchess.compute_move());
+      console.log("COMPUTE_MOVE response: ", response);
+      postComputeMoveResponse(response);
     }
   });
 
-  function sendMovePieceResponse(previousPosition, response) {
+  function postMovePieceResponse(previousPosition, response) {
     self.postMessage({
       type: "MOVE_PIECE_RESPONSE",
       payload: {
@@ -33,7 +30,7 @@ import("../../crate-wasm/pkg").then(wasm => {
     });
   }
 
-  function sendComputeMoveResponse(response) {
+  function postComputeMoveResponse(response) {
     self.postMessage({
       type: "COMPUTE_MOVE_RESPONSE",
       payload: {

@@ -141,10 +141,10 @@ impl fmt::Display for RChess {
         write!(f, "{{")?;
         write!(f, "\"position\":\"{}\"", self.game.current_position())?;
         match self.game.result() {
-            None => {},
+            None => {}
             Some(result) => {
                 write!(f, ",\"result\":\"{:?}\"", result)?;
-            },
+            }
         }
         write!(f, "}}")
     }

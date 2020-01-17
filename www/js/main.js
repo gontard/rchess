@@ -13,8 +13,9 @@ const board = Chessboard("board", {
 });
 
 // only allow white pieces to be dragged
-function onDragStart() {
-  if (state.isBlackTurn()) {
+function onDragStart(source, piece) {
+  const isBlack = piece[0] === "b";
+  if (isBlack || state.isFinished()) {
     return false;
   }
 }
@@ -22,10 +23,10 @@ function onDragStart() {
 function onDrop(source, target, piece, newUserPosition, oldUserPosition) {
   if (source === target) return;
   state.movePiece(
-      Chessboard.objToFen(oldUserPosition),
-      Chessboard.objToFen(newUserPosition),
-      { source, target }
-  )
+    Chessboard.objToFen(oldUserPosition),
+    Chessboard.objToFen(newUserPosition),
+    { source, target }
+  );
 }
 
 state.addEventListener("colorChanged", () => {
@@ -34,4 +35,21 @@ state.addEventListener("colorChanged", () => {
 
 state.addEventListener("positionChanged", () => {
   board.position(state.getPosition());
+});
+
+state.addEventListener("resultChanged", () => {
+  if (state.isFinished()) {
+    const messages = {
+      WhiteCheckmates: "The white checkmates",
+      WhiteResigns: "The white resigns",
+      BlackCheckmates: "The black checkmates",
+      BlackResigns: "The black resigns",
+      Stalemate: "Stalemate (Draw)",
+      DrawAccepted: "Draw accepted",
+      DrawDeclared: "Draw declared"
+    };
+    let resultElement = $(".end");
+    $(".endgame").addClass("visible");
+    $(".endgame .text").text(messages[state.getResult()]);
+  }
 });
