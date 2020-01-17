@@ -2,7 +2,6 @@ require("expose-loader?$!jquery");
 import Chessboard from "chessboardjs";
 import State from "./state";
 
-const worker = new Worker("./worker.js");
 const state = new State();
 const board = Chessboard("board", {
   position: "start",
@@ -14,62 +13,43 @@ const board = Chessboard("board", {
 });
 
 // only allow white pieces to be dragged
-function onDragStart() {
-  if (state.isBlackTurn()) {
+function onDragStart(source, piece) {
+  const isBlack = piece[0] === "b";
+  if (isBlack || state.isFinished()) {
     return false;
   }
 }
 
 function onDrop(source, target, piece, newUserPosition, oldUserPosition) {
   if (source === target) return;
-  state.setBlackTurn();
-  sendMovePiece(
+  state.movePiece(
     Chessboard.objToFen(oldUserPosition),
     Chessboard.objToFen(newUserPosition),
     { source, target }
   );
 }
 
-function sendMovePiece(previousPosition, newPosition, { source, target }) {
-  worker.postMessage({
-    type: "MOVE_PIECE",
-    payload: {
-      previousPosition,
-      newPosition,
-      move: {
-        source,
-        target
-      }
-    }
-  });
-}
-
-function sendComputeMove() {
-  worker.postMessage({
-    type: "COMPUTE_MOVE"
-  });
-}
-
-worker.addEventListener("message", event => {
-  const message = event.data;
-  const { type, payload } = message;
-  if ("MOVE_PIECE_RESPONSE" === type) {
-    const { previousPosition, newPosition } = payload;
-    console.log("New IA position: " + newPosition);
-    board.position(newPosition);
-    if (newPosition !== previousPosition) {
-      sendComputeMove();
-    } else {
-      state.setWhiteTurn();
-    }
-  } else if ("COMPUTE_MOVE_RESPONSE" === type) {
-    const { newPosition } = payload;
-    console.log("New IA position: " + newPosition);
-    board.position(newPosition);
-    state.setWhiteTurn();
-  }
+state.addEventListener("colorChanged", () => {
+  $(".ia-working").toggleClass("visible", state.isBlackTurn());
 });
 
-state.addEventListener("change", () => {
-  $(".ia-working").toggleClass("visible", state.isBlackTurn());
+state.addEventListener("positionChanged", () => {
+  board.position(state.getPosition());
+});
+
+state.addEventListener("resultChanged", () => {
+  if (state.isFinished()) {
+    const messages = {
+      WhiteCheckmates: "The white checkmates",
+      WhiteResigns: "The white resigns",
+      BlackCheckmates: "The black checkmates",
+      BlackResigns: "The black resigns",
+      Stalemate: "Stalemate (Draw)",
+      DrawAccepted: "Draw accepted",
+      DrawDeclared: "Draw declared"
+    };
+    let resultElement = $(".end");
+    $(".endgame").addClass("visible");
+    $(".endgame .text").text(messages[state.getResult()]);
+  }
 });
