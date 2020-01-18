@@ -24,3 +24,9 @@ jobs:
         ACCESS_TOKEN: ${{ secrets.ACCESS_TOKEN }}
         BRANCH: gh-pages # The branch the action should deploy to.
         FOLDER: www/dist # The folder the action should deploy.
+        CLEAN: true
+    - uses: cypress-io/github-action@v1
+      with:
+        working-directory: ./www
+      env:
+        CYPRESS_baseUrl: "https://gontard:github:io/rchess"
