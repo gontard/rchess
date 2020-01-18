@@ -8,7 +8,10 @@
     "start": "webpack-dev-server -d",
     "build": "webpack --mode production",
     "prettier": "prettier --write \"./**/*.{js,jsx,json}\"",
-    "prettier:check": "prettier --check \"./**/*.{js,jsx,json}\""
+    "prettier:check": "prettier --check \"./**/*.{js,jsx,json}\"",
+    "cypress": "npm run cypress:open",
+    "cypress:open": "cypress open",
+    "serve:dist": "serve -l 8080 dist & wait-on http://127.0.0.1:8080"
   },
   "bin": {
     "create-rust-wasm-worker": ".bin/create-rust-wasm-worker.js"
@@ -16,8 +19,11 @@
   "devDependencies": {
     "@wasm-tool/wasm-pack-plugin": "0.1.6",
     "copy-webpack-plugin": "5.1.1",
+    "cypress": "3.8.2",
     "expose-loader": "0.7.5",
     "prettier": "1.19.1",
+    "serve": "11.3.0",
+    "wait-on": "3.3.0",
     "webpack": "^4.27.1",
     "webpack-cli": "^3.1.2",
     "webpack-dev-server": "^3.1.11"
