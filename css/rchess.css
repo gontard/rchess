@@ -1,7 +1,8 @@
 :root {
   /* https://mycolor.space/?hex=%230097AD&sub=1  cube palette */
   --white-color: #EEE8A9;
-  --black-color: #0097AD;
+  --black-color: #396974;
+  --background-color: #FDFAE8;
   --endgame-color: #1O1O1O;
 }
 
@@ -10,11 +11,23 @@ body {
   height: 100vh;
   margin: 0;
   place-items: center center;
-  background: linear-gradient(rgba(255,255,255,.7), rgba(255,255,255,.6)), url("../img/background.jpg");
+  background-color: var(--background-color);
+  font-family: "Helvetica Neue",Helvetica,sans-serif;
+  font-size: 32px;
 }
 
 .board {
-  width: 400px;
+  width: 95vmin;
+}
+
+/* laptop */
+@media screen and (min-device-width: 1200px) and (max-device-width: 1600px)  {
+  .board {
+    width: 60vmin;
+  }
+  body {
+    font-size: 16px;
+  }
 }
 
 /* white square */
@@ -25,8 +38,8 @@ body {
 
 /* black square */
 .black-3c85d {
-  background-color: #005C7C;
-  color: var(--black-color);
+  background-color: var(--black-color);
+  color: var(--white-color);
 }
 
 /* highlighted square */
@@ -37,15 +50,33 @@ body {
 .endgame {
   visibility: hidden;
   position: absolute;
-  top: calc(50% - 260px);
+  top: calc(10%);
   left: 50%;
   transform: translate(-50%, -50%);
   text-align: center;
+  font-size: 120%;
 }
 
 .endgame .text {
-  font-size: 20px;
   color: var(--endgame-color);
+  margin-bottom: 2vmin;
+}
+
+.button {
+  text-decoration: none;
+  color: white;
+  padding: 13px 40px;
+  display: inline-block;
+  position: relative;
+  border: 1px solid rgba(0,0,0,0.21);
+  border-bottom: 4px solid rgba(0,0,0,0.21);
+  border-radius: 4px;
+  text-shadow: 0 1px 0 rgba(0,0,0,0.15);
+  background: linear-gradient(rgba(255,105,30,1) 0%, rgba(230,95,28,1) 100%);
+}
+
+.button:hover {
+  background: linear-gradient(rgba(255,105,30,0.9) 0%, rgba(230,95,28,0.9) 100%);
 }
 
 .ia-working {
@@ -81,9 +112,4 @@ body {
 
 .visible {
   visibility: visible;
-}
-
-@keyframes fadeinout {
-  0%,100% { opacity: 0; }
-  50% { opacity: 1; }
 }
