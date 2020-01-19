@@ -14,8 +14,8 @@ const board = Chessboard("board", {
 
 // only allow white pieces to be dragged
 function onDragStart(source, piece) {
-  const isBlack = piece[0] === "b";
-  if (isBlack || state.isFinished()) {
+  const isBlackPiece = piece[0] === "b";
+  if (isBlackPiece || state.isBlackTurn() || state.isFinished()) {
     return false;
   }
 }
