@@ -45,6 +45,11 @@ jobs:
         with:
           path: target/wasm32-unknown-unknown
           key: ${{ runner.os }}-cargo-build-target-wasm32-${{ hashFiles('**/Cargo.lock') }}
+      - name: Cache wasm pkg
+        uses: actions/cache@v1
+        with:
+          path: crate-wasm/pkg
+          key: ${{ runner.os }}-crate-wasm-pkg-${{ hashFiles('**/Cargo.lock') }}
       - name: Cache npm cache
         uses: actions/cache@v1
         with:
