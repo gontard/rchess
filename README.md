@@ -18,7 +18,6 @@ The AI algorithm runs in a dedicated web worker thread since this is a CPU inten
 
 The algorithm is a [web assembly](https://webassembly.org/) module compiled from rust using [rustwasm](https://rustwasm.github.io/).
 
-
 ### UI
 
 The UI is very basic but it is good enough.
