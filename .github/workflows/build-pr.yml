@@ -9,6 +9,16 @@ jobs:
 
     steps:
     - uses: actions/checkout@v1
+    - name: Cache cargo registry
+      uses: actions/cache@v1
+      with:
+        path: ~/.cargo/registry
+        key: ${{ runner.os }}-cargo-registry-${{ hashFiles('**/Cargo.lock') }}
+    - name: Cache cargo release build
+      uses: actions/cache@v1
+      with:
+        path: target/release
+        key: ${{ runner.os }}-cargo-build-target-release-${{ hashFiles('**/Cargo.lock') }}
     - name: Check rust formatting
       run: cargo fmt -- --check
     - name: Run rust tests
@@ -20,6 +30,28 @@ jobs:
 
     steps:
       - uses: actions/checkout@v1
+      - name: Cache cargo registry
+        uses: actions/cache@v1
+        with:
+          path: ~/.cargo/registry
+          key: ${{ runner.os }}-cargo-registry-${{ hashFiles('**/Cargo.lock') }}
+      - name: Cache cargo release build
+        uses: actions/cache@v1
+        with:
+          path: target/release
+          key: ${{ runner.os }}-cargo-build-target-release-${{ hashFiles('**/Cargo.lock') }}
+      - name: Cache cargo wasm32 build
+        uses: actions/cache@v1
+        with:
+          path: target/wasm32-unknown-unknown
+          key: ${{ runner.os }}-cargo-build-target-wasm32-${{ hashFiles('**/Cargo.lock') }}
+      - name: Cache npm cache
+        uses: actions/cache@v1
+        with:
+          path: ~/.npm
+          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-node-
       - name: Install node modules
         run: npm ci
         working-directory: ./www
